@@ -1,0 +1,83 @@
+/* Définissez les variables de couleurs pour une gestion facile */
+:root {
+  --primary-color: #6a11cb;
+  --secondary-color: #2575fc;
+  --link-color: #f8f9fa;
+  --link-hover-color: #ffffff;
+}
+
+.nav-cool {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--link-color) !important;
+}
+
+.nav-cool-link {
+  color: var(--link-color) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-cool-link:hover {
+  color: var(--link-hover-color) !important;
+  transform: translateY(-2px);
+}
+
+.nav-cool-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: var(--link-hover-color);
+  transition: width 0.3s ease;
+}
+
+.nav-cool-link:hover::after {
+  width: 70%;
+}
+
+/* Ajoutez ces styles à votre fichier NavigationBar.css existant */
+
+.nav-btn {
+  /* Assurez-vous d'avoir une transition pour un effet fluide */
+  transition: all 0.2s ease-in-out; 
+  font-weight: 600;
+  border-radius: 50px; /* Bords arrondis pour un look moderne */
+  padding: 8px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none; /* Enlève la bordure par défaut de Bootstrap */
+}
+
+/* Styles au survol */
+.nav-btn:hover {
+  transform: translateY(-2px); /* Bouton se soulève */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée */
+}
+
+/* Styles au clic */
+.nav-btn:active {
+  transform: translateY(0); /* Le bouton revient à sa position d'origine */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre plus petite, comme s'il était pressé */
+  filter: brightness(90%); /* Assombrit légèrement le bouton */
+}
+
+/* Styles spécifiques pour le bouton 'btn-outline-light' */
+.btn-outline-light.nav-btn {
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn-outline-light.nav-btn:hover {
+  background-color: #fff;
+  color: var(--primary-color);
+}

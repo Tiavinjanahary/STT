@@ -1,0 +1,13 @@
+/* body {
+  Remplacez cette URL par le chemin de votre image
+    background-image: url('/bg-light.jpg');
+
+  Cette propriété fige l'image de fond lors du défilement
+  background-attachment: fixed;
+
+  Ces propriétés aident à bien positionner et dimensionner l'image
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+ */
