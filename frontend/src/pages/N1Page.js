@@ -107,6 +107,16 @@ function N1Page() {
     setSelectedStat(null);
   }
 
+  const handleExport = () => {
+    const params = new URLSearchParams();
+    if (dateRange.startDate && dateRange.endDate) {
+        params.append('startDate', dateRange.startDate);
+        params.append('endDate', dateRange.endDate);
+    }
+    // La construction de l'URL et la redirection déclenchent le téléchargement
+    window.location.href = `${API_URL}/export?${params.toString()}`;
+  };
+
   return (
     <div className="container">
         <div className='title'>
@@ -121,9 +131,14 @@ function N1Page() {
 
       <FilterControls onFilter={handleFilter} initialDateRange={dateRange} />
 
+      <div className="d-flex gap-2 mb-3">
         <button className="btn btn-danger" onClick={showAddForm}>
           Ajouter une entrée
         </button>
+        <button className="btn btn-success" onClick={handleExport}>
+          <i className="bi bi-file-earmark-excel-fill"></i> Exporter en Excel
+        </button>
+      </div>
         
         <hr />
 
