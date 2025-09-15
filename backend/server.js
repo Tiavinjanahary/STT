@@ -5,6 +5,7 @@ const cors = require('cors');
 // Importer les nouvelles routes
 const n1StatsRouter = require('./routes/n1-stats');
 const n2StatsRouter = require('./routes/n2-stats');
+const exportStatsRouter = require('./routes/export-stats');
 
 const app = express();
 const port = process.env.PORT || 5005;
@@ -22,6 +23,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     // Utiliser les routes dédiées pour N1 et N2
     app.use('/n1', n1StatsRouter);
     app.use('/n2', n2StatsRouter);
+    app.use('/export', exportStatsRouter);
 
     app.listen(port, () => {
         console.log(`Le serveur fonctionne sur le port: ${port}`);
