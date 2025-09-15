@@ -42,15 +42,23 @@ const FilterControls = ({ onFilter, initialDateRange }) => {
 
   const handleLastWeekClick = () => {
     const today = new Date();
-    const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-    const dayOfWeek = lastWeek.getDay();
-    const diff = lastWeek.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-    const monday = new Date(lastWeek.setDate(diff));
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
+    const dayOfWeek = today.getDay(); // 0=Dimanche, 1=Lundi, ..., 6=Samedi
 
-    const start = monday.toISOString().split('T')[0];
-    const end = sunday.toISOString().split('T')[0];
+    // Calculer le début de la semaine en cours (Lundi)
+    const currentMonday = new Date(today);
+    const diffToMonday = today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+    currentMonday.setDate(diffToMonday);
+
+    // Calculer le Lundi de la semaine précédente
+    const lastMonday = new Date(currentMonday);
+    lastMonday.setDate(currentMonday.getDate() - 7);
+
+    // Calculer le Dimanche de la semaine précédente
+    const lastSunday = new Date(lastMonday);
+    lastSunday.setDate(lastMonday.getDate() + 6);
+
+    const start = lastMonday.toISOString().split('T')[0];
+    const end = lastSunday.toISOString().split('T')[0];
 
     setStartDate(start);
     setEndDate(end);
