@@ -5,11 +5,13 @@ import FilterControls from '../components/FilterControls';
 
 const API_N1_URL = 'http://10.128.14.109:5005/n1';
 const API_N2_URL = 'http://10.128.14.109:5005/n2';
+const API_EXPORT_URL = 'http://10.128.14.109:5005/export';
 
 function HomePage() {
     const [n1Stats, setN1Stats] = useState([]);
     const [n2Stats, setN2Stats] = useState([]);
     const [error, setError] = useState(null);
+    const [dateRange, setDateRange] = useState({});
 
     const fetchAllStats = useCallback(async (params = {}) => {
         try {
@@ -25,6 +27,20 @@ function HomePage() {
             console.error(err);
         }
     }, []);
+
+    const handleFilter = useCallback((newDateRange) => {
+        setDateRange(newDateRange);
+        fetchAllStats(newDateRange);
+    }, [fetchAllStats]);
+
+    const handleExport = () => {
+        const params = new URLSearchParams();
+        if (dateRange.startDate && dateRange.endDate) {
+            params.append('startDate', dateRange.startDate);
+            params.append('endDate', dateRange.endDate);
+        }
+        window.location.href = `${API_EXPORT_URL}?${params.toString()}`;
+    };
 
     useEffect(() => {
         fetchAllStats();
@@ -55,7 +71,13 @@ function HomePage() {
           <h1 className="text-center my-4">Statistique des tickets N1 et N2</h1>
         </div>
         <hr />
-            <FilterControls onFilter={fetchAllStats} />
+            <FilterControls onFilter={handleFilter} />
+
+            <div className="d-flex gap-2 mb-3">
+                <button className="btn btn-success" onClick={handleExport}>
+                    <i className="bi bi-file-earmark-excel-fill"></i> Exporter en Excel
+                </button>
+            </div>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
