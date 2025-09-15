@@ -26,12 +26,17 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Erreur: ' + err));
 });
 
-// POST: Ajouter une nouvelle statistique
-router.route('/add').post((req, res) => {
+// POST: Ajouter ou mettre à jour une statistique (Upsert)
+router.route('/add').post(async (req, res) => {
     const { date, appel, jira, mail, escalade, p1, p2, p3, p4 } = req.body;
 
-    const newStat = new N2Stat({
-        date: Date.parse(date),
+    // Normaliser la date pour la comparaison (début du jour en UTC)
+    const targetDate = new Date(date);
+    targetDate.setUTCHours(0, 0, 0, 0);
+
+    const filter = { date: targetDate };
+
+    const update = {
         appel: Number(appel),
         jira: Number(jira),
         mail: Number(mail),
@@ -40,11 +45,20 @@ router.route('/add').post((req, res) => {
         p2: Number(p2),
         p3: Number(p3),
         p4: Number(p4),
-    });
+        date: targetDate // Assurer que la date est bien celle du début du jour
+    };
 
-    newStat.save()
-        .then(() => res.json('Statistique ajoutée!'))
-        .catch(err => res.status(400).json('Erreur: ' + err));
+    try {
+        // findOneAndUpdate avec upsert: true va créer le document s'il n'existe pas
+        const stat = await N2Stat.findOneAndUpdate(filter, update, {
+            new: true, // Retourne le document modifié
+            upsert: true, // Crée le document s'il n'existe pas
+            setDefaultsOnInsert: true // Applique les valeurs par défaut du schéma
+        });
+        res.json('Statistique ajoutée ou mise à jour!');
+    } catch (err) {
+        res.status(400).json('Erreur: ' + err);
+    }
 });
 
 // GET: Récupérer une statistique par son ID
