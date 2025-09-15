@@ -97,7 +97,7 @@ const StatsTable = ({ stats, onEdit, onDelete, title }) => {
           <tbody>
             {sortedStats.map(stat => (
               <tr key={stat._id} className="border-bottom">
-                <td className="fw-bold">{stat.date && !isNaN(new Date(stat.date).getTime()) ? new Date(stat.date).toISOString().slice(0, 10).split('-').reverse().join('/') : '-'}</td>
+                <td className="fw-bold">{stat.date && !isNaN(new Date(stat.date).getTime()) ? new Date(stat.date).toLocaleDateString('fr-FR', { timeZone: 'UTC' }) : '-'}</td>
                 <td className="text-center">{stat.appel}</td>
                 <td className="text-center">{stat.jira}</td>
                 <td className="text-center">{stat.mail}</td>
